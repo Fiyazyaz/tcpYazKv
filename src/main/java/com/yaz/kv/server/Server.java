@@ -17,13 +17,14 @@ public class Server {
 
         System.out.println("Client Connected!");
 
-        BufferedReader reader =
-                new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         PrintWriter writer =
                 new PrintWriter(socket.getOutputStream(), true);
 
         Scanner sc = new Scanner(System.in);
+
+        StringBuilder string = new StringBuilder();
 
         // Receive Thread
         Thread receiveThread = new Thread(() -> {
@@ -33,12 +34,14 @@ public class Server {
                 String message;
 
                 while ((message = reader.readLine()) != null) {
-
+                    string.append(message);
                     System.out.println("\nClient : " + message);
 
                     if (message.equalsIgnoreCase("bye")) {
                         break;
                     }
+
+                    writer.println(message);
                 }
 
             } catch (IOException e) {
@@ -52,17 +55,17 @@ public class Server {
 
             try {
 
-                while (true) {
-
-                    String message = sc.nextLine();
-
-                    writer.println(message);
-
-                    if (message.equalsIgnoreCase("bye")) {
-                        break;
-                    }
-
-                }
+//                while (true) {
+//
+//                    String message = sc.nextLine();
+//
+//                    writer.println(message);
+//
+//                    if (message.equalsIgnoreCase("bye")) {
+//                        break;
+//                    }
+//
+//                }
 
             } catch (Exception e) {
                 e.printStackTrace();
